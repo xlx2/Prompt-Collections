@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  prompt-collection:
+    build: .
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PROMPT_DB_PATH=/app/data/prompts.db

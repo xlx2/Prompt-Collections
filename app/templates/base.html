@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="system">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{{ title if title else "Prompt Collection" }}</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <a href="/">Prompt Cards</a>
+      <span class="brand-sub">收录你的大模型提问</span>
+    </div>
+    <nav class="nav">
+      <a class="nav-pill" href="/">Prompt 收录</a>
+      <a class="nav-pill" href="/prompts/new">新建 Prompt</a>
+      <a class="nav-pill" href="/tags">标签管理</a>
+    </nav>
+    <div class="theme-toggle" role="group" aria-label="主题选择">
+      <button type="button" data-theme-btn="system">系统</button>
+      <button type="button" data-theme-btn="light">浅色</button>
+      <button type="button" data-theme-btn="dark">深色</button>
+    </div>
+  </header>
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

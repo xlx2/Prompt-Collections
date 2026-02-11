@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>新建 Prompt</h1>
+    <p class="muted">记录用途、提示词内容以及标签归类。</p>
+  </div>
+</section>
+
+<form class="panel" method="post" action="/prompts">
+  <div class="field">
+    <label for="title">标题</label>
+    <input id="title" name="title" required placeholder="例如：营销文案生成" />
+  </div>
+  <div class="field">
+    <label for="summary">简要说明</label>
+    <input id="summary" name="summary" required placeholder="这条 prompt 的核心作用" />
+  </div>
+  <div class="field">
+    <label for="purpose">用途/功能</label>
+    <input id="purpose" name="purpose" required placeholder="适用场景或目标" />
+  </div>
+  <div class="field">
+    <label for="content">提示词内容</label>
+    <textarea id="content" name="content" rows="8" required placeholder="输入完整的 prompt 文本"></textarea>
+  </div>
+
+  <div class="field">
+    <label>已有标签</label>
+    <div class="tag-grid">
+      {% for tag in tags %}
+        <label class="tag-check">
+          <input type="checkbox" name="tag_ids" value="{{ tag.id }}" />
+          <span class="tag" style="--tag-color: {{ tag.color }}">{{ tag.name }}</span>
+        </label>
+      {% endfor %}
+      {% if not tags %}
+        <p class="muted">暂无标签，可在下方新增。</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="field">
+    <label>新增标签（可选）</label>
+    <div class="tag-inputs" data-new-tag-container>
+      <div class="row tag-row-input">
+        <input name="new_tag_names" placeholder="标签名称" />
+        <input class="color" type="color" name="new_tag_colors" value="#6b7280" />
+      </div>
+    </div>
+    <div class="row">
+      <button class="ghost" type="button" data-add-tag>添加标签</button>
+    </div>
+    <p class="hint">每个标签可单独选择颜色。</p>
+  </div>
+
+  <div class="actions">
+    <button class="primary" type="submit">保存</button>
+    <a class="ghost" href="/">取消</a>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>{{ prompt.title }}</h1>
+    <p class="muted">{{ prompt.summary }}</p>
+  </div>
+  <div class="head-actions">
+    <button class="primary" type="button" data-copy="{{ prompt.content | e }}">复制 Prompt</button>
+    <a class="ghost" href="/">返回列表</a>
+    <a class="ghost" href="/prompts/{{ prompt.id }}/edit">编辑</a>
+    <form method="post" action="/prompts/{{ prompt.id }}/delete" onsubmit="return confirm('确认删除该卡片？');">
+      <button class="danger" type="submit">删除</button>
+    </form>
+  </div>
+</section>
+
+<section class="panel">
+  <div class="detail-grid">
+    <div class="detail-wide">
+      <h3>用途/功能</h3>
+      <p>{{ prompt.purpose }}</p>
+    </div>
+    <div class="detail-meta">
+      <div class="detail-item">
+        <h3>创建时间</h3>
+        <p>{{ created_date }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>最近更新</h3>
+        <p>{{ updated_date }}</p>
+      </div>
+      <div class="detail-item">
+        <h3>标签</h3>
+        <div class="tag-row">
+          {% for tag in tags %}
+            <span class="tag" style="--tag-color: {{ tag.color }}">{{ tag.name }}</span>
+          {% endfor %}
+          {% if not tags %}
+            <span class="muted">暂无标签</span>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-block">
+    <h3>提示词内容</h3>
+    <pre>{{ prompt.content }}</pre>
+  </div>
+</section>
+
+{% endblock %}

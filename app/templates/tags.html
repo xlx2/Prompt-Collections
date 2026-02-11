@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>标签管理</h1>
+    <p class="muted">创建、调整颜色或删除标签。</p>
+  </div>
+</section>
+
+<section class="panel">
+  <form class="row" method="post" action="/tags">
+    <input name="name" placeholder="标签名称" required />
+    <input class="color" type="color" name="color" value="#6b7280" />
+    <button class="primary" type="submit">新增标签</button>
+  </form>
+
+  <div class="tag-table">
+    {% for tag in tags %}
+      <div class="tag-row-item">
+        <div class="tag-preview">
+          <span class="tag" style="--tag-color: {{ tag.color }}">{{ tag.name }}</span>
+        </div>
+        <form class="row" method="post" action="/tags/{{ tag.id }}/update">
+          <input class="color" type="color" name="color" value="{{ tag.color }}" />
+          <button class="ghost" type="submit">更新颜色</button>
+        </form>
+        <form method="post" action="/tags/{{ tag.id }}/delete" onsubmit="return confirm('确认删除该标签？');">
+          <button class="danger" type="submit">删除</button>
+        </form>
+      </div>
+    {% endfor %}
+    {% if not tags %}
+      <p class="muted">暂无标签。</p>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}
