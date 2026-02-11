@@ -1,6 +1,6 @@
 version: "3.8"
 services:
-  prompt-collection:
+  prompt-collections:
     build: .
     ports:
       - "8000:8000"
