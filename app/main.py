@@ -1,3 +1,7 @@
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
+from typing import Optional
+
 from fastapi import FastAPI, Form, Request
 from fastapi.responses import RedirectResponse
 from fastapi.staticfiles import StaticFiles
@@ -5,22 +9,37 @@ from fastapi.templating import Jinja2Templates
 
 from . import db
 
-app = FastAPI(title="Prompt Collection")
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    db.init_db()
+    yield
+
+
+app = FastAPI(title="Prompt Collection", lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 
 templates = Jinja2Templates(directory="app/templates")
 
 
-@app.on_event("startup")
-def startup() -> None:
-    db.init_db()
-
-
 @app.get("/")
-def index(request: Request):
-    prompts = db.list_prompts_with_tags()
-    return templates.TemplateResponse("index.html", {"request": request, "prompts": prompts})
+def index(request: Request, sort: str = "updated_desc", tag_id: Optional[str] = None):
+    selected_tag_id: Optional[int] = None
+    if tag_id and tag_id.isdigit():
+        selected_tag_id = int(tag_id)
+
+    prompts = db.list_prompts_with_tags(sort=sort, tag_id=selected_tag_id)
+    tags = db.list_tags()
+    return templates.TemplateResponse(
+        "index.html",
+        {
+            "request": request,
+            "prompts": prompts,
+            "tags": tags,
+            "selected_sort": sort,
+            "selected_tag_id": selected_tag_id,
+        },
+    )
 
 
 @app.get("/prompts/new")
@@ -135,7 +154,7 @@ def manage_tags(request: Request):
 
 
 @app.post("/tags")
-def create_tag(name: str = Form(...), color: str = Form("#6b7280")):
+def create_tag(name: str = Form(...), color: str = Form("#eaba0a")):
     db.upsert_tag(name.strip(), color)
     return RedirectResponse(url="/tags", status_code=303)
 

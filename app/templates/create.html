@@ -9,19 +9,19 @@
 
 <form class="panel" method="post" action="/prompts">
   <div class="field">
-    <label for="title">标题</label>
+    <label for="title">标题 <span class="required-mark">*</span></label>
     <input id="title" name="title" required placeholder="例如：营销文案生成" />
   </div>
   <div class="field">
-    <label for="summary">简要说明</label>
+    <label for="summary">简要说明 <span class="required-mark">*</span></label>
     <input id="summary" name="summary" required placeholder="这条 prompt 的核心作用" />
   </div>
   <div class="field">
-    <label for="purpose">用途/功能</label>
+    <label for="purpose">用途/功能 <span class="required-mark">*</span></label>
     <input id="purpose" name="purpose" required placeholder="适用场景或目标" />
   </div>
   <div class="field">
-    <label for="content">提示词内容</label>
+    <label for="content">提示词内容 <span class="required-mark">*</span></label>
     <textarea id="content" name="content" rows="8" required placeholder="输入完整的 prompt 文本"></textarea>
   </div>
 

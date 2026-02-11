@@ -55,7 +55,7 @@ document.querySelectorAll('[data-copy]').forEach((btn) => {
   });
 });
 
-document.querySelectorAll('button, .primary, .ghost, .danger, .nav-pill').forEach((el) => {
+document.querySelectorAll('button, .primary, .ghost, .danger, .nav-pill, .card').forEach((el) => {
   el.classList.add('magnet');
   const resetMagnet = () => {
     el.style.transform = 'translate(0, 0)';
@@ -116,5 +116,14 @@ addTagButtons.forEach((btn) => {
       <input class="color" type="color" name="new_tag_colors" value="#6b7280" />
     `;
     container.appendChild(row);
+  });
+});
+
+document.querySelectorAll('select[data-auto-submit]').forEach((selectEl) => {
+  selectEl.addEventListener('change', () => {
+    const form = selectEl.closest('form');
+    if (form) {
+      form.requestSubmit();
+    }
   });
 });

@@ -218,23 +218,23 @@ a {
 }
 
 .magnet {
-  --magnet-glow: rgba(210, 218, 230, 0.55);
+  --magnet-glow: rgba(180, 214, 245, 0.18);
   isolation: isolate;
 }
 
 .magnet::after {
   content: "";
   position: absolute;
-  inset: -6px;
+  inset: -2px;
   border-radius: inherit;
-  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), var(--magnet-glow), transparent 60%);
+  background: radial-gradient(circle at var(--mx, 50%) var(--my, 50%), var(--magnet-glow), transparent 52%);
   opacity: 0;
   transition: opacity 200ms ease;
   z-index: -1;
 }
 
 .magnet[data-magnet-active="1"]::after {
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .panel {
@@ -250,25 +250,48 @@ a {
 .cards {
   display: grid;
   gap: 20px;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .card {
-  background: linear-gradient(135deg, var(--glass-strong), var(--glass));
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--surface) 55%, transparent), color-mix(in srgb, var(--glass) 85%, transparent)),
+    linear-gradient(135deg, var(--glass-strong), var(--glass));
   border-radius: var(--radius);
   padding: 20px;
-  border: 1px solid color-mix(in srgb, var(--border) 80%, transparent);
-  box-shadow: var(--shadow);
+  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  box-shadow:
+    0 18px 36px rgba(15, 23, 42, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.35);
   cursor: pointer;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  backdrop-filter: blur(16px) saturate(120%);
+  backdrop-filter: blur(18px) saturate(130%);
+  position: relative;
+  overflow: hidden;
+  --magnet-glow: rgba(180, 214, 245, 0.18);
+  transition: transform 150ms ease, box-shadow 220ms ease, border-color 220ms ease;
 }
 
 .card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--primary) 36%, var(--border));
+  box-shadow:
+    0 22px 40px rgba(15, 23, 42, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.42);
 }
+
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 80% at 10% 0%, rgba(255, 255, 255, 0.24), transparent 55%),
+    radial-gradient(80% 60% at 85% 100%, rgba(130, 180, 230, 0.14), transparent 65%);
+}
+
 
 .card-head {
   display: flex;
@@ -322,8 +345,14 @@ a {
   margin-bottom: 18px;
 }
 
+.required-mark {
+  color: var(--danger);
+  font-weight: 700;
+}
+
 .field input,
 .field textarea,
+.field select,
 .row input {
   padding: 10px 12px;
   border-radius: 12px;
@@ -331,6 +360,10 @@ a {
   background: var(--surface-strong);
   font-family: var(--font-sans);
   color: var(--text);
+}
+
+.field select {
+  appearance: none;
 }
 
 .field textarea {
@@ -449,6 +482,28 @@ input[type="color"].color::-webkit-color-swatch {
   backdrop-filter: blur(16px) saturate(120%);
 }
 
+.filter-panel {
+  padding: 16px 20px;
+}
+
+.filter-form {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-form .field {
+  margin: 0;
+  min-width: 220px;
+}
+
+.card-meta {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+}
+
 .tag-table {
   margin-top: 20px;
   display: flex;
@@ -471,6 +526,10 @@ input[type="color"].color::-webkit-color-swatch {
 }
 
 @media (max-width: 720px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
   .page-head {
     flex-direction: column;
     align-items: flex-start;
@@ -490,5 +549,11 @@ input[type="color"].color::-webkit-color-swatch {
     width: 100%;
     justify-content: flex-start;
     flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 1080px) and (min-width: 721px) {
+  .cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }

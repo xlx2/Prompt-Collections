@@ -8,6 +8,29 @@
   <a class="primary" href="/prompts/new">创建新卡片</a>
 </section>
 
+<section class="panel filter-panel">
+  <form class="filter-form" method="get" action="/">
+    <div class="field">
+      <label for="sort">排序方式</label>
+      <select id="sort" name="sort" data-auto-submit>
+        <option value="updated_desc" {% if selected_sort == "updated_desc" %}selected{% endif %}>按最新更新时间</option>
+        <option value="created_desc" {% if selected_sort == "created_desc" %}selected{% endif %}>按创建时间</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="tag_id">标签筛选</label>
+      <select id="tag_id" name="tag_id" data-auto-submit>
+        <option value="">全部标签</option>
+        {% for tag in tags %}
+          <option value="{{ tag.id }}" {% if selected_tag_id is not none and selected_tag_id == tag.id %}selected{% endif %}>
+            {{ tag.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </form>
+</section>
+
 <section class="cards">
   {% if prompts %}
     {% for prompt, tags in prompts %}
@@ -22,6 +45,7 @@
             <span class="tag" style="--tag-color: {{ tag.color }}">{{ tag.name }}</span>
           {% endfor %}
         </div>
+        <p class="card-meta">创建于 {{ prompt.created_at.split("T")[0] }} · 更新于 {{ prompt.updated_at.split("T")[0] }}</p>
       </article>
     {% endfor %}
   {% else %}
